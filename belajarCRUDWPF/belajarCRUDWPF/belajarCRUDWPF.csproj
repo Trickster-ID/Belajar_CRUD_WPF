@@ -82,7 +82,12 @@
     <Compile Include="Migrations\202003190727363_addsuppliermodel.designer.cs">
       <DependentUpon>202003190727363_addsuppliermodel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003200315575_additemmodel.cs" />
+    <Compile Include="Migrations\202003200315575_additemmodel.designer.cs">
+      <DependentUpon>202003200315575_additemmodel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\item.cs" />
     <Compile Include="Model\Supplier.cs" />
     <Compile Include="MyContext\myContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -100,6 +105,9 @@
     </Compile>
     <EmbeddedResource Include="Migrations\202003190727363_addsuppliermodel.resx">
       <DependentUpon>202003190727363_addsuppliermodel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003200315575_additemmodel.resx">
+      <DependentUpon>202003200315575_additemmodel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

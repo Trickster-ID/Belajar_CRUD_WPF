@@ -17,3 +17,4 @@ D:\VisualBC\Belajar_CRUD_WPF\belajarCRUDWPF\belajarCRUDWPF\obj\Debug\belajarCRUD
 D:\VisualBC\Belajar_CRUD_WPF\belajarCRUDWPF\belajarCRUDWPF\obj\Debug\belajarCRUDWPF.exe
 D:\VisualBC\Belajar_CRUD_WPF\belajarCRUDWPF\belajarCRUDWPF\obj\Debug\belajarCRUDWPF.pdb
 D:\VisualBC\Belajar_CRUD_WPF\belajarCRUDWPF\belajarCRUDWPF\obj\Debug\belajarCRUDWPF.csprojResolveAssemblyReference.cache
+D:\VisualBC\Belajar_CRUD_WPF\belajarCRUDWPF\belajarCRUDWPF\obj\Debug\belajarCRUDWPF.Migrations.additemmodel.resources

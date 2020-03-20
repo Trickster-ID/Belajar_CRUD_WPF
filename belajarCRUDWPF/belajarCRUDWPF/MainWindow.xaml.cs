@@ -23,10 +23,14 @@ namespace belajarCRUDWPF
     public partial class MainWindow : Window
     {
         myContext connection = new myContext();
+        int cb_sup;
         public MainWindow()
         {
             InitializeComponent();
             tbl_supplier.ItemsSource = connection.Suppliers.ToList();
+            tbl_item.ItemsSource = connection.Items.ToList();
+            drp_supplier.ItemsSource = connection.Suppliers.ToList();
+            //loaddata();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -76,15 +80,23 @@ namespace belajarCRUDWPF
             
             int deletelist = Convert.ToInt32(txt_id.Text);
             var myid = connection.Suppliers.Where(S => S.Id == deletelist).FirstOrDefault();
-            connection.Suppliers.Remove(myid);
-            var delete = connection.SaveChanges();
-            txt_id.Text = string.Empty;
-            txt_name.Text = string.Empty;
-            txt_address.Text = string.Empty;
-            MessageBox.Show(delete + "Data Berhasil DiHapus");
-            tbl_supplier.ItemsSource = connection.Suppliers.ToList();
             
-            
+            MessageBoxResult dr = MessageBox.Show("Are you sure to delete row?", "Confirmation", MessageBoxButton.YesNo);
+            if (dr == MessageBoxResult.Yes)
+            {
+                //delete row from database or datagridview...
+                connection.Suppliers.Remove(myid);
+                var delete = connection.SaveChanges();
+                MessageBox.Show(delete + "Data Berhasil DiHapus");
+                txt_id.Text = string.Empty;
+                txt_name.Text = string.Empty;
+                txt_address.Text = string.Empty;
+                tbl_supplier.ItemsSource = connection.Suppliers.ToList();
+            }
+            else
+            {
+                tbl_supplier.ItemsSource = connection.Suppliers.ToList();
+            }
         }
 
         private void txt_name_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -118,6 +130,50 @@ namespace belajarCRUDWPF
                 string Address = (tbl_supplier.SelectedCells[2].Column.GetCellContent(data) as TextBlock).Text;
                 txt_address.Text = Address;
             }
+        }
+        private void txt_id_Copy_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void txt_name_Copy_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void txt_price_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void txt_stock_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void drp_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            cb_sup = Convert.ToInt32(drp_supplier.SelectedValue.ToString());
+        }
+
+        private void btn_update_item_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_insert_item_Click(object sender, RoutedEventArgs e)
+        {
+            var cPrice = Convert.ToInt32(txt_price_item.Text);
+            var cStock = Convert.ToInt32(txt_stock_item.Text);
+            var cSup = connection.Suppliers.Where(si => si.Id == cb_sup).FirstOrDefault();
+            var inputitem = new Item(txt_name_item.Text, cPrice, cStock, cSup);
+            connection.Items.Add(inputitem);
+            connection.SaveChanges();
+            MessageBox.Show("Data Telah Disimpan");
+            txt_name_item.Text = "";
+            txt_price_item.Text = "";
+            txt_stock_item.Text = "";
+            tbl_item.ItemsSource = connection.Items.ToList();
         }
     }
 }
