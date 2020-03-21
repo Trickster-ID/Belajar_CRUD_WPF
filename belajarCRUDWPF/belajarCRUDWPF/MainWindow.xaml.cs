@@ -54,12 +54,10 @@ namespace belajarCRUDWPF
                 connection.SaveChanges();
                 txt_name.Text = string.Empty;
                 txt_address.Text = string.Empty;
-
                 MessageBox.Show("Anda Berhasil Memasukan Data");
             }
-            
             tbl_supplier.ItemsSource = connection.Suppliers.ToList();
-
+            drp_supplier.ItemsSource = connection.Suppliers.ToList();
         }
 
         private void btn_update_Click(object sender, RoutedEventArgs e)
@@ -68,10 +66,9 @@ namespace belajarCRUDWPF
             var myid = connection.Suppliers.Where(S => S.Id == id).FirstOrDefault();
             myid.Name = txt_name.Text;
             myid.Address = txt_address.Text;
-
             connection.SaveChanges();
             tbl_supplier.ItemsSource = connection.Suppliers.ToList();
-
+            drp_supplier.ItemsSource = connection.Suppliers.ToList();
             MessageBox.Show("Data Berhasil DiPerbarui");
         }
 
@@ -131,6 +128,7 @@ namespace belajarCRUDWPF
                 txt_address.Text = Address;
             }
         }
+
         private void txt_id_Copy_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
@@ -153,27 +151,98 @@ namespace belajarCRUDWPF
 
         private void drp_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            cb_sup = Convert.ToInt32(drp_supplier.SelectedValue.ToString());
+            try
+            {
+                cb_sup = Convert.ToInt32(drp_supplier.SelectedValue.ToString());
+            }
+            catch (Exception)
+            {
+                drp_supplier.ItemsSource = connection.Suppliers.ToList();
+            }
         }
 
         private void btn_update_item_Click(object sender, RoutedEventArgs e)
         {
-
+            int id_item = Convert.ToInt32(txt_id_item.Text);
+            var cSup = connection.Suppliers.Where(si => si.Id == cb_sup).FirstOrDefault();
+            var myid_item = connection.Items.Where(si => si.Id == id_item).FirstOrDefault();
+            myid_item.Name = txt_name_item.Text;
+            myid_item.Price = Int32.Parse(txt_price_item.Text);
+            myid_item.Stock = Int32.Parse(txt_stock_item.Text);
+            myid_item.Supplier = cSup;
+            connection.SaveChanges();
+            tbl_item.ItemsSource = connection.Items.ToList();
+            MessageBox.Show("Data Berhasil DiPerbarui");
         }
 
         private void btn_insert_item_Click(object sender, RoutedEventArgs e)
         {
-            var cPrice = Convert.ToInt32(txt_price_item.Text);
-            var cStock = Convert.ToInt32(txt_stock_item.Text);
-            var cSup = connection.Suppliers.Where(si => si.Id == cb_sup).FirstOrDefault();
-            var inputitem = new Item(txt_name_item.Text, cPrice, cStock, cSup);
-            connection.Items.Add(inputitem);
-            connection.SaveChanges();
-            MessageBox.Show("Data Telah Disimpan");
-            txt_name_item.Text = "";
-            txt_price_item.Text = "";
-            txt_stock_item.Text = "";
-            tbl_item.ItemsSource = connection.Items.ToList();
+            try
+            {
+                var cPrice = Convert.ToInt32(txt_price_item.Text);
+                var cStock = Convert.ToInt32(txt_stock_item.Text);
+                var cSup = connection.Suppliers.Where(si => si.Id == cb_sup).FirstOrDefault();
+                var inputitem = new Item(txt_name_item.Text, cPrice, cStock, cSup);
+                connection.Items.Add(inputitem);
+                connection.SaveChanges();
+                MessageBox.Show("Data Telah Disimpan");
+                txt_name_item.Text = "";
+                txt_price_item.Text = "";
+                txt_stock_item.Text = "";
+                drp_supplier.Text = string.Empty;
+                tbl_item.ItemsSource = connection.Items.ToList();
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Mohon Isi Angka di Kolom Price & Stock");
+            }
+        }
+
+        private void tbl_item_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var data_item = tbl_item.SelectedItem;
+            if (data_item == null)
+            {
+                tbl_item.ItemsSource = connection.Items.ToList();
+            }
+            else
+            {
+                string Id_item = (tbl_item.SelectedCells[0].Column.GetCellContent(data_item) as TextBlock).Text;
+                txt_id_item.Text = Id_item;
+                string Name_item = (tbl_item.SelectedCells[1].Column.GetCellContent(data_item) as TextBlock).Text;
+                txt_name_item.Text = Name_item;
+                string price_item = (tbl_item.SelectedCells[2].Column.GetCellContent(data_item) as TextBlock).Text;
+                txt_price_item.Text = price_item;
+                string stock_item = (tbl_item.SelectedCells[3].Column.GetCellContent(data_item) as TextBlock).Text;
+                txt_stock_item.Text = stock_item;
+                string supp_item = (tbl_item.SelectedCells[4].Column.GetCellContent(data_item) as TextBlock).Text;
+                drp_supplier.Text = supp_item;
+            }
+        }
+
+        private void btn_delete_item_Click(object sender, RoutedEventArgs e)
+        {
+            int dlist_item = Convert.ToInt32(txt_id_item.Text);
+            var myid_item = connection.Items.Where(S => S.Id == dlist_item).FirstOrDefault();
+
+            MessageBoxResult dr = MessageBox.Show("Are you sure to delete row?", "Confirmation", MessageBoxButton.YesNo);
+            if (dr == MessageBoxResult.Yes)
+            {
+                //delete row from database or datagridview...
+                connection.Items.Remove(myid_item);
+                connection.SaveChanges();
+                MessageBox.Show("Data Berhasil DiHapus");
+                txt_id_item.Text = string.Empty;
+                txt_name_item.Text = string.Empty;
+                txt_price_item.Text = string.Empty;
+                txt_stock_item.Text = string.Empty;
+                drp_supplier.Text = string.Empty;
+                tbl_item.ItemsSource = connection.Items.ToList();
+            }
+            else
+            {
+                tbl_item.ItemsSource = connection.Items.ToList();
+            }
         }
     }
 }

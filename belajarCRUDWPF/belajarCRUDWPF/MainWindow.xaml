@@ -43,8 +43,8 @@
                     <ComboBox x:Name="drp_supplier" ItemsSource="{Binding Suppliers}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="drp_supplier_SelectionChanged" HorizontalAlignment="Left" Margin="213,77,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.497,0.518" />
                     <Button x:Name="btn_insert_item" Content="Insert" HorizontalAlignment="Left" Margin="425,11,0,0" VerticalAlignment="Top" Width="75" Click="btn_insert_item_Click"/>
                     <Button x:Name="btn_update_item" Content="Update" HorizontalAlignment="Left" Margin="425,44,0,0" VerticalAlignment="Top" Width="75" Click="btn_update_item_Click"/>
-                    <Button x:Name="btn_delete_item" Content="Delete" HorizontalAlignment="Left" Margin="425,77,0,0" VerticalAlignment="Top" Width="75"/>
-                    <DataGrid x:Name="tbl_item" HorizontalAlignment="Left" Height="172" Margin="10,110,0,0" VerticalAlignment="Top" Width="490" AutoGenerateColumns="False">
+                    <Button x:Name="btn_delete_item" Content="Delete" HorizontalAlignment="Left" Margin="425,77,0,0" VerticalAlignment="Top" Width="75" Click="btn_delete_item_Click"/>
+                    <DataGrid x:Name="tbl_item" HorizontalAlignment="Left" Height="172" Margin="10,110,0,0" VerticalAlignment="Top" Width="490" AutoGenerateColumns="False" SelectionChanged="tbl_item_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="98" Header="Id" Binding="{Binding Id}"/>
                             <DataGridTextColumn Width="98" Header="Name" Binding="{Binding Name}"/>
