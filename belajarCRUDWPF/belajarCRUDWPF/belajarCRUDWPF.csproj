@@ -43,6 +43,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.2.2.920, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.2.2\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=3.0.1.920, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.3.0.1\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -64,6 +70,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="buttonstyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="forgot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="loginregis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,6 +89,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="forgot.xaml.cs">
+      <DependentUpon>forgot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="loginregis.xaml.cs">
+      <DependentUpon>loginregis.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -86,8 +110,25 @@
     <Compile Include="Migrations\202003200315575_additemmodel.designer.cs">
       <DependentUpon>202003200315575_additemmodel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003220700550_addemailinsupp.cs" />
+    <Compile Include="Migrations\202003220700550_addemailinsupp.designer.cs">
+      <DependentUpon>202003220700550_addemailinsupp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003230629370_tblrole.cs" />
+    <Compile Include="Migrations\202003230629370_tblrole.designer.cs">
+      <DependentUpon>202003230629370_tblrole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003230712130_addcolumnrole.cs" />
+    <Compile Include="Migrations\202003230712130_addcolumnrole.designer.cs">
+      <DependentUpon>202003230712130_addcolumnrole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003230934280_editnamerole.cs" />
+    <Compile Include="Migrations\202003230934280_editnamerole.designer.cs">
+      <DependentUpon>202003230934280_editnamerole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\item.cs" />
+    <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Supplier.cs" />
     <Compile Include="MyContext\myContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -108,6 +149,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003200315575_additemmodel.resx">
       <DependentUpon>202003200315575_additemmodel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003220700550_addemailinsupp.resx">
+      <DependentUpon>202003220700550_addemailinsupp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003230629370_tblrole.resx">
+      <DependentUpon>202003230629370_tblrole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003230712130_addcolumnrole.resx">
+      <DependentUpon>202003230712130_addcolumnrole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003230934280_editnamerole.resx">
+      <DependentUpon>202003230934280_editnamerole.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -130,6 +183,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
+  <Import Project="..\packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets')" />
 </Project>
