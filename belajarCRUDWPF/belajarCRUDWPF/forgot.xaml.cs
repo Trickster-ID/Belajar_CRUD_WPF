@@ -59,8 +59,8 @@ namespace belajarCRUDWPF
         private void btn_back_forgot_Click(object sender, RoutedEventArgs e)
         {
             loginregis loginpanel = new loginregis();
-            this.Close(); ;
             loginpanel.Show();
+            this.Close(); ;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

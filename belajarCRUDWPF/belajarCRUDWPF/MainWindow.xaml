@@ -5,26 +5,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:belajarCRUDWPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     WindowStartupLocation="CenterScreen"
     Title="MainWindow"
-    Width="600"
-    Height="421"
+    Width="621"
+    Height="562"
     ResizeMode="NoResize"
     mc:Ignorable="d">
-    <Grid>
-        <Label
-            Margin="10,61,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="&#xD;&#xA;&#xD;&#xA;" />
+    <Grid Background="#F0F8FF">
         <TabControl x:Name="tabmenu"
             Width="574"
-            Height="373"
+            Height="501"
             Margin="10,10,10,0"
             HorizontalAlignment="Center"
-            VerticalAlignment="Top">
-            <TabItem x:Name="tab1" Header="Supplier">
-                <Grid Background="#FFE5E5E5">
+            VerticalAlignment="Top"
+            Background="Transparent">
+            <TabItem x:Name="tab1" Header="Supplier" Background="Transparent">
+                <Grid Background="Transparent">
                     <Label
                         Width="53"
                         Margin="10,21,0,0"
@@ -50,7 +47,7 @@
                         Content="Email" />
                     <TextBox
                         x:Name="txt_id"
-                        Width="120"
+                        Width="39"
                         Height="23"
                         Margin="66,24,0,0"
                         HorizontalAlignment="Left"
@@ -69,7 +66,7 @@
                         TextWrapping="Wrap" />
                     <TextBox
                         x:Name="txt_address"
-                        Width="120"
+                        Width="147"
                         Height="23"
                         Margin="281,24,0,0"
                         HorizontalAlignment="Left"
@@ -78,7 +75,7 @@
                         TextWrapping="Wrap" />
                     <TextBox
                         x:Name="txt_email"
-                        Width="120"
+                        Width="147"
                         Height="23"
                         Margin="281,69,0,0"
                         HorizontalAlignment="Left"
@@ -87,7 +84,7 @@
                         TextWrapping="Wrap" />
                     <ComboBox x:Name="cb_role" 
                         HorizontalAlignment="Left" 
-                        Margin="211,120,0,0"
+                        Margin="66,120,0,0"
                         VerticalAlignment="Top" 
                         Width="120"
                         ItemsSource="{Binding Roles}"
@@ -96,73 +93,72 @@
                         SelectionChanged="cb_role_SelectionChanged"
                         />
                     <DataGrid
+                        Background="Transparent"
                         x:Name="tbl_supplier"
                         Width="548"
-                        Height="169"
+                        Height="297"
                         Margin="10,166,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         AutoGenerateColumns="False"
-                        SelectionChanged="tbl_supplier_SelectionChanged">
+                        SelectionChanged="tbl_supplier_SelectionChanged" CanUserAddRows="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                            <DataGridTextColumn Binding="{Binding Address}" Header="Address" />
-                            <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
-                            <DataGridTextColumn Binding="{Binding Role.Name}" Header="Role" />
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="45" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="110" />
+                            <DataGridTextColumn Binding="{Binding Address}" Header="Address" Width="80" />
+                            <DataGridTextColumn Binding="{Binding Email}" Header="Email" Width="130"/>
+                            <DataGridTextColumn Binding="{Binding Role.Name}" Header="Role" Width="70"/>
+                            <DataGridTemplateColumn Header="Delete">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button x:Name="btn_delete_intbl" Click="btn_delete_intbl_Click" Background="OrangeRed" BorderBrush="OrangeRed">
+                                            <materialDesign:PackIcon Kind="Delete"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button
-                        x:Name="btn_update"
-                        Width="85"
-                        Margin="473,46,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="btn_update_Click"
-                        Content="Update"
-                        Foreground="Black" 
-                        Background="Transparent"/>
-                    <Button
                         x:Name="btn_insert"
                         Width="85"
-                        Margin="473,9,0,0"
+                        Margin="473,66,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Click="btn_insert_click"
-                        Content="Insert"
+                        Content="Save"
                         Foreground="Black" 
-                        Background="Transparent"/>
-                    <Button
-                        x:Name="btn_delete"
-                        Width="85"
-                        Margin="473,83,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="btn_delete_Click"
-                        Content="Delete"
-                        Foreground="Black" 
-                        Background="Transparent"/>
+                        Background="Transparent"
+                        BorderBrush="Black"/>
                     <Button
                         x:Name="btn_clear_supp"
                         Width="85"
-                        Margin="473,120,0,0"
+                        Margin="473,112,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Click="btn_clear_supp_Click"
                         Content="Clear"
                         Foreground="Black" 
-                        Background="Transparent"/>
+                        Background="Transparent"
+                        BorderBrush="Black"/>
+                    <Button x:Name="Lout1" Background="Transparent" BorderBrush="Black" Margin="511,15,10,426" Click="Lout1_Click">
+                        <materialDesign:PackIcon Kind="Logout" Foreground="Black"/>
+                    </Button>
+                    <Button x:Name="btn_src" Margin="215,120,306,321" Background="Transparent" BorderBrush="Transparent" Click="btn_src_Click">
+                        <materialDesign:PackIcon Kind="Search" Foreground="Black"/>
+                    </Button>
                     <Label
-                        Margin="155,120,0,0"
+                        Margin="10,120,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="Role" />
+                    <TextBox x:Name="srcbx" HorizontalAlignment="Left" Height="23" Margin="281,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="147" PreviewTextInput="srcbx_PreviewTextInput"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="tab2" Header="Item">
-                <Grid Background="#FFE5E5E5">
+            <TabItem x:Name="tab2" Header="Item" Background="Transparent">
+                <Grid Background="Transparent">
                     <Label
-                        Margin="10,8,0,0"
+                        Margin="10,12,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="Id" />
@@ -172,7 +168,7 @@
                         VerticalAlignment="Top"
                         Content="Name" />
                     <Label
-                        Margin="213,9,0,0"
+                        Margin="213,13,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="Price" />
@@ -182,15 +178,15 @@
                         VerticalAlignment="Top"
                         Content="Stock" />
                     <Label
-                        Margin="129,104,0,0"
+                        Margin="5,108,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="Supplier" />
                     <TextBox
                         x:Name="txt_id_item"
-                        Width="120"
+                        Width="42"
                         Height="23"
-                        Margin="61,12,0,0"
+                        Margin="61,16,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         IsReadOnly="True"
@@ -209,7 +205,7 @@
                         x:Name="txt_price_item"
                         Width="120"
                         Height="23"
-                        Margin="264,13,0,0"
+                        Margin="264,17,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         PreviewTextInput="txt_price_PreviewTextInput"
@@ -226,7 +222,7 @@
                     <ComboBox
                         x:Name="drp_supplier"
                         Width="120"
-                        Margin="214,104,0,0"
+                        Margin="61,108,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         DisplayMemberPath="Name"
@@ -234,78 +230,78 @@
                         RenderTransformOrigin="0.497,0.518"
                         SelectedValuePath="Id"
                         SelectionChanged="drp_supplier_SelectionChanged" />
+                    <Button x:Name="Lout2" Margin="508,10,10,431" Background="Transparent" BorderBrush="Black" Click="Lout2_Click">
+                        <materialDesign:PackIcon Kind="Logout" Foreground="Black"/>
+                    </Button>
                     <Button
                         x:Name="btn_insert_item"
                         Width="84"
-                        Margin="474,8,0,0"
+                        Margin="474,67,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Click="btn_insert_item_Click"
-                        Content="Insert"
+                        Content="Save"
                         Foreground="Black" 
-                        Background="Transparent"/>
+                        Background="Transparent"
+                        BorderBrush="Black"/>
                     <Button
-                        x:Name="btn_update_item"
+                        x:Name="btn_clear_item"
                         Width="84"
-                        Margin="474,45,0,0"
+                        Margin="474,115,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Click="btn_update_item_Click"
-                        Content="Update"
+                        Click="btn_clear_item_Click"
+                        Content="Clear"
                         Foreground="Black" 
-                        Background="Transparent"/>
-                    <Button
-                        x:Name="btn_delete_item"
-                        Width="84"
-                        Margin="474,82,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="btn_delete_item_Click"
-                        Content="Delete"
-                        Foreground="Black" 
-                        Background="Transparent"/>
+                        Background="Transparent"
+                        BorderBrush="Black"/>
                     <DataGrid
+                        Background="Transparent"
                         x:Name="tbl_item"
                         Width="548"
-                        Height="172"
+                        Height="300"
                         Margin="10,163,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         AutoGenerateColumns="False"
-                        SelectionChanged="tbl_item_SelectionChanged">
+                        SelectionChanged="tbl_item_SelectionChanged" CanUserAddRows="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Width="50"
                                 Binding="{Binding Id}"
                                 Header="Id" />
                             <DataGridTextColumn
-                                Width="140"
+                                Width="100"
                                 Binding="{Binding Name}"
                                 Header="Name" />
                             <DataGridTextColumn
-                                Width="110"
+                                Width="80"
                                 Binding="{Binding Price}"
                                 Header="price" />
                             <DataGridTextColumn
-                                Width="50"
+                                Width="80"
                                 Binding="{Binding Stock}"
                                 Header="Stock" />
                             <DataGridTextColumn
                                 Width="120"
                                 Binding="{Binding Supplier.Name}"
                                 Header="Supplier" />
+                            <DataGridTemplateColumn Header="Delete">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button x:Name="btn_dlt_intblitem" Click="btn_dlt_intblitem_Click" Background="OrangeRed" BorderBrush="OrangeRed">
+                                            <materialDesign:PackIcon Kind="Delete"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button
-                        x:Name="btn_clear_item"
-                        Width="84"
-                        Margin="474,121,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="btn_clear_item_Click"
-                        Content="Clear"
-                        Foreground="Black" 
-                        Background="Transparent"/>
+
+                    <Button x:Name="btn_src_item" Margin="213,110,309,331" Background="Transparent" BorderBrush="Transparent" Foreground="Black" Click="btn_src_item_Click">
+                        <materialDesign:PackIcon Kind="Search"/>
+                    </Button>
+                    <TextBox x:Name="srcbx_item" HorizontalAlignment="Left" Height="23" Margin="264,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="srcbx_item_PreviewTextInput"/>
                 </Grid>
             </TabItem>
         </TabControl>

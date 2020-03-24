@@ -50,8 +50,8 @@ namespace belajarCRUDWPF
                 else
                 {
                     MainWindow mainWindow = new MainWindow(txt_login.Text);
-                    this.Close();
                     mainWindow.Show();
+                    this.Close();
                 }
             }
             catch
@@ -73,8 +73,8 @@ namespace belajarCRUDWPF
         private void btn_to_forgot_Click(object sender, RoutedEventArgs e)
         {
             forgot forgotpanel = new forgot();
-            this.Close(); ;
             forgotpanel.Show();
+            this.Close(); ;
         }
     }
 }

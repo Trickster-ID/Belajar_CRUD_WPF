@@ -47,9 +47,9 @@ namespace belajarCRUDWPF
             if(role_akses.Role.Id == 1)
             {
                 tab2.IsSelected = true;
-                tab1.IsEnabled = false;
-                tab1.IsSelected = false;
-                //tab1.IsVisible = false;
+//                 tab1.IsEnabled = false;
+//                 tab1.IsSelected = false;
+                tab1.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -60,7 +60,7 @@ namespace belajarCRUDWPF
         private void sendnewpass(string email, string password, string name)
         {
             MailMessage mm = new MailMessage("qwdqwf1@gmail.com", email);
-            mm.Subject = "New Password To Login";
+            mm.Subject = ("New Password To Login"+ " " + DateTime.Now);
             mm.Body = string.Format("Hi {0},<br /><br />Your password is {1}.<br /><br />Thank You.", name, password);
             mm.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
@@ -83,7 +83,7 @@ namespace belajarCRUDWPF
         }
         private void btn_insert_click(object sender, RoutedEventArgs e)
         {
-            try
+            if (txt_id.Text == "")
             {
                 string pattern_supp = @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$";
                 string password = System.Guid.NewGuid().ToString();
@@ -123,15 +123,7 @@ namespace belajarCRUDWPF
                 tbl_supplier.ItemsSource = connection.Suppliers.ToList();
                 drp_supplier.ItemsSource = connection.Suppliers.ToList();
             }
-            catch
-            {
-
-            }
-        }
-
-        private void btn_update_Click(object sender, RoutedEventArgs e)
-        {
-            try
+            else
             {
                 int id = Convert.ToInt32(txt_id.Text);
                 var myrole = connection.Roles.Where(S => S.Id == cb_roles).FirstOrDefault();
@@ -152,26 +144,177 @@ namespace belajarCRUDWPF
                 else
                 {
                     connection.SaveChanges();
+                    MessageBox.Show("Data Berhasil DiPerbarui");
                     tbl_supplier.ItemsSource = connection.Suppliers.ToList();
                     drp_supplier.ItemsSource = connection.Suppliers.ToList();
-                    MessageBox.Show("Data Berhasil DiPerbarui");
                     txt_id.Text = string.Empty;
                     txt_name.Text = string.Empty;
                     txt_address.Text = string.Empty;
                     txt_email.Text = string.Empty;
                 }
-                
             }
-            catch
+        }
+        private void tbl_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var data = tbl_supplier.SelectedItem;
+            if (data == null)
             {
-                MessageBox.Show("Mohon Pilih Salah Satu Data");
                 tbl_supplier.ItemsSource = connection.Suppliers.ToList();
+            }
+            else
+            {
+                string Id = (tbl_supplier.SelectedCells[0].Column.GetCellContent(data) as TextBlock).Text;
+                txt_id.Text = Id;
+                string Name = (tbl_supplier.SelectedCells[1].Column.GetCellContent(data) as TextBlock).Text;
+                txt_name.Text = Name;
+                string Address = (tbl_supplier.SelectedCells[2].Column.GetCellContent(data) as TextBlock).Text;
+                txt_address.Text = Address;
+                string Email = (tbl_supplier.SelectedCells[3].Column.GetCellContent(data) as TextBlock).Text;
+                txt_email.Text = Email;
+                string Role_id = (tbl_supplier.SelectedCells[4].Column.GetCellContent(data) as TextBlock).Text;
+                cb_role.Text = Role_id;
+            }
+        }
+        private void txt_id_Copy_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        private void txt_name_Copy_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        private void txt_price_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        private void txt_stock_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        private void drp_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //try
+            //{
+            //    cb_sup = Convert.ToInt32(drp_supplier.SelectedValue.ToString());
+            //}
+            //catch (Exception)
+            //{
+            //    drp_supplier.ItemsSource = connection.Suppliers.ToList();
+            //}
+            if (drp_supplier.Text == "")
+            {
                 drp_supplier.ItemsSource = connection.Suppliers.ToList();
             }
-            
+            else
+            {
+                cb_sup = Convert.ToInt32(drp_supplier.SelectedValue.ToString());
+            }
         }
+        private void btn_insert_item_Click(object sender, RoutedEventArgs e)
+        {
+            if (txt_id_item.Text == "")
+            {
+                string pattern_item = "[^a-zA-Z0-9]";
+                var cPrice = Convert.ToInt32(txt_price_item.Text);
+                var cStock = Convert.ToInt32(txt_stock_item.Text);
+                var cSup = connection.Suppliers.Where(si => si.Id == cb_sup).FirstOrDefault();
+                var inputitem = new Item(txt_name_item.Text, cPrice, cStock, cSup);
+                if (Regex.IsMatch(txt_name_item.Text, pattern_item))
+                {
+                    MessageBox.Show("Format Nama Item Salah");
+                }
+                else
+                {
+                    connection.Items.Add(inputitem);
+                    connection.SaveChanges();
+                    MessageBox.Show("Data Telah Disimpan");
+                    txt_id_item.Text = "";
+                    txt_name_item.Text = "";
+                    txt_price_item.Text = "";
+                    txt_stock_item.Text = "";
+                    drp_supplier.Text = string.Empty;
+                    tbl_item.ItemsSource = connection.Items.ToList();
+                }
+            }
+            else
+            {
+                int id_item = Convert.ToInt32(txt_id_item.Text);
+                var cSup = connection.Suppliers.Where(si => si.Id == cb_sup).FirstOrDefault();
+                var myid_item = connection.Items.Where(si => si.Id == id_item).FirstOrDefault();
+                myid_item.Name = txt_name_item.Text;
+                myid_item.Price = Int32.Parse(txt_price_item.Text);
+                myid_item.Stock = Int32.Parse(txt_stock_item.Text);
+                myid_item.Supplier = cSup;
+                connection.SaveChanges();
+                MessageBox.Show("Data Berhasil DiPerbarui");
+                tbl_item.ItemsSource = connection.Items.ToList();
+            }
+        }
+        private void tbl_item_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var data_item = tbl_item.SelectedItem;
+            if (data_item == null)
+            {
+                tbl_item.ItemsSource = connection.Items.ToList();
+            }
+            else
+            {
+                string Id_item = (tbl_item.SelectedCells[0].Column.GetCellContent(data_item) as TextBlock).Text;
+                txt_id_item.Text = Id_item;
+                string Name_item = (tbl_item.SelectedCells[1].Column.GetCellContent(data_item) as TextBlock).Text;
+                txt_name_item.Text = Name_item;
+                string price_item = (tbl_item.SelectedCells[2].Column.GetCellContent(data_item) as TextBlock).Text;
+                txt_price_item.Text = price_item;
+                string stock_item = (tbl_item.SelectedCells[3].Column.GetCellContent(data_item) as TextBlock).Text;
+                txt_stock_item.Text = stock_item;
+                string supp_item = (tbl_item.SelectedCells[4].Column.GetCellContent(data_item) as TextBlock).Text;
+                drp_supplier.Text = supp_item;
+            }
+        }
+        private void txt_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
 
-        private void btn_delete_Click(object sender, RoutedEventArgs e)
+        }
+        private void txt_id_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        private void txt_name_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        private void txt_address_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+        private void btn_clear_supp_Click(object sender, RoutedEventArgs e)
+        {
+            txt_id.Text = string.Empty;
+            txt_name.Text = string.Empty;
+            txt_address.Text = string.Empty;
+            txt_email.Text = string.Empty;
+            cb_role.Text = string.Empty;
+        }
+        private void btn_clear_item_Click(object sender, RoutedEventArgs e)
+        {
+            txt_id_item.Text = "";
+            txt_name_item.Text = "";
+            txt_price_item.Text = "";
+            txt_stock_item.Text = "";
+            drp_supplier.Text = string.Empty;
+        }
+        private void cb_role_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cb_role.Text == "")
+            {
+                cb_role.ItemsSource = connection.Roles.ToList();
+            }
+            else
+            {
+                cb_roles = Convert.ToInt32(cb_role.SelectedValue.ToString());
+            }
+        }
+        private void btn_delete_intbl_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -203,151 +346,79 @@ namespace belajarCRUDWPF
             {
                 tbl_supplier.ItemsSource = connection.Suppliers.ToList();
             }
-            
-        }
+            //try
+            //{
+            //    var data_item = tbl_item.SelectedItem;
+            //    int Id_item = Convert.ToInt32((tbl_item.SelectedCells[0].Column.GetCellContent(data_item) as TextBlock).Text);
+            //    var myid = connection.Suppliers.Where(S => S.Id == Id_item).FirstOrDefault();
 
-        private void tbl_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            //    MessageBoxResult dr = MessageBox.Show("Are you sure to delete row?", "Confirmation", MessageBoxButton.YesNo);
+            //    if (dr == MessageBoxResult.Yes)
+            //    {
+            //        //delete row from database or datagridview...
+            //        connection.Suppliers.Remove(myid);
+            //        var delete = connection.SaveChanges();
+            //        MessageBox.Show(delete + "Data Berhasil DiHapus");
+            //        txt_id.Text = string.Empty;
+            //        txt_name.Text = string.Empty;
+            //        txt_address.Text = string.Empty;
+            //        txt_email.Text = string.Empty;
+            //        cb_role.Text = string.Empty;
+            //        tbl_supplier.ItemsSource = connection.Suppliers.ToList();
+            //        drp_supplier.ItemsSource = connection.Suppliers.ToList();
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Mohon Pilih Salah Satu Data");
+            //        tbl_supplier.ItemsSource = connection.Suppliers.ToList();
+            //        drp_supplier.ItemsSource = connection.Suppliers.ToList();
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    tbl_supplier.ItemsSource = connection.Suppliers.ToList();
+            //}
+        }
+        private void srcbx_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var data = tbl_supplier.SelectedItem;
-            if (data == null)
+
+        }
+        private void btn_src_Click(object sender, RoutedEventArgs e)
+        {
+            List<Supplier> rdatas = new List<Supplier>();
+            int parseValue;
+            if (srcbx.Text == "")
             {
                 tbl_supplier.ItemsSource = connection.Suppliers.ToList();
             }
             else
             {
-                string Id = (tbl_supplier.SelectedCells[0].Column.GetCellContent(data) as TextBlock).Text;
-                txt_id.Text = Id;
-                string Name = (tbl_supplier.SelectedCells[1].Column.GetCellContent(data) as TextBlock).Text;
-                txt_name.Text = Name;
-                string Address = (tbl_supplier.SelectedCells[2].Column.GetCellContent(data) as TextBlock).Text;
-                txt_address.Text = Address;
-                string Email = (tbl_supplier.SelectedCells[3].Column.GetCellContent(data) as TextBlock).Text;
-                txt_email.Text = Email;
-                string Role_id = (tbl_supplier.SelectedCells[4].Column.GetCellContent(data) as TextBlock).Text;
-                cb_role.Text = Role_id;
-            }
-        }
-
-        private void txt_id_Copy_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
-        private void txt_name_Copy_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
-        private void txt_price_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
-        private void txt_stock_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
-        private void drp_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //try
-            //{
-            //    cb_sup = Convert.ToInt32(drp_supplier.SelectedValue.ToString());
-            //}
-            //catch (Exception)
-            //{
-            //    drp_supplier.ItemsSource = connection.Suppliers.ToList();
-            //}
-            if (drp_supplier.Text == "")
-            {
-                drp_supplier.ItemsSource = connection.Suppliers.ToList();
-            }
-            else
-            {
-                cb_sup = Convert.ToInt32(drp_supplier.SelectedValue.ToString());
-            }
-        }
-
-        private void btn_update_item_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                int id_item = Convert.ToInt32(txt_id_item.Text);
-                var cSup = connection.Suppliers.Where(si => si.Id == cb_sup).FirstOrDefault();
-                var myid_item = connection.Items.Where(si => si.Id == id_item).FirstOrDefault();
-                myid_item.Name = txt_name_item.Text;
-                myid_item.Price = Int32.Parse(txt_price_item.Text);
-                myid_item.Stock = Int32.Parse(txt_stock_item.Text);
-                myid_item.Supplier = cSup;
-                connection.SaveChanges();
-                tbl_item.ItemsSource = connection.Items.ToList();
-                MessageBox.Show("Data Berhasil DiPerbarui");
-            }
-            catch
-            {
-                MessageBox.Show("Mohon Pilih Salah Satu Data");
-                tbl_item.ItemsSource = connection.Items.ToList();
-                drp_supplier.ItemsSource = connection.Suppliers.ToList();
-            }
-        }
-
-        private void btn_insert_item_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string pattern_item = "[^a-zA-Z0-9]";
-                var cPrice = Convert.ToInt32(txt_price_item.Text);
-                var cStock = Convert.ToInt32(txt_stock_item.Text);
-                var cSup = connection.Suppliers.Where(si => si.Id == cb_sup).FirstOrDefault();
-                var inputitem = new Item(txt_name_item.Text, cPrice, cStock, cSup);
-                if (Regex.IsMatch(txt_name_item.Text, pattern_item))
+                foreach (Supplier tdah in connection.Suppliers.ToList())
                 {
-                    MessageBox.Show("Format Nama Item Salah");
+                    if (tdah.Name.ToLower().Contains(srcbx.Text.ToLower()))
+                    {
+                        rdatas.Add(tdah);
+                    } else if (int.TryParse(srcbx.Text, out parseValue))
+                    {
+                        if (tdah.Id.Equals(Convert.ToInt32(srcbx.Text.ToLower())))
+                        {
+                            rdatas.Add(tdah);
+                        }
+                    } else if (tdah.Address.ToLower().Contains(srcbx.Text.ToLower()))
+                    {
+                        rdatas.Add(tdah);
+                    }else if (tdah.Email.ToLower().Contains(srcbx.Text.ToLower()))
+                    {
+                        rdatas.Add(tdah);
+                    }else if (tdah.Role.Name.ToLower().Contains(srcbx.Text.ToLower()))
+                    {
+                        rdatas.Add(tdah);
+                    }
                 }
-                else
-                {
-                    connection.Items.Add(inputitem);
-                    connection.SaveChanges();
-                    MessageBox.Show("Data Telah Disimpan");
-                    txt_id_item.Text = "";
-                    txt_name_item.Text = "";
-                    txt_price_item.Text = "";
-                    txt_stock_item.Text = "";
-                    drp_supplier.Text = string.Empty;
-                    tbl_item.ItemsSource = connection.Items.ToList();
-                }
-            }
-            catch(Exception)
-            {
-                MessageBox.Show("Mohon Isi Angka di Kolom Price & Stock");
-                tbl_item.ItemsSource = connection.Items.ToList();
-                drp_supplier.ItemsSource = connection.Suppliers.ToList();
+                tbl_supplier.ItemsSource = rdatas.ToList();
             }
         }
-
-        private void tbl_item_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var data_item = tbl_item.SelectedItem;
-            if (data_item == null)
-            {
-                tbl_item.ItemsSource = connection.Items.ToList();
-            }
-            else
-            {
-                string Id_item = (tbl_item.SelectedCells[0].Column.GetCellContent(data_item) as TextBlock).Text;
-                txt_id_item.Text = Id_item;
-                string Name_item = (tbl_item.SelectedCells[1].Column.GetCellContent(data_item) as TextBlock).Text;
-                txt_name_item.Text = Name_item;
-                string price_item = (tbl_item.SelectedCells[2].Column.GetCellContent(data_item) as TextBlock).Text;
-                txt_price_item.Text = price_item;
-                string stock_item = (tbl_item.SelectedCells[3].Column.GetCellContent(data_item) as TextBlock).Text;
-                txt_stock_item.Text = stock_item;
-                string supp_item = (tbl_item.SelectedCells[4].Column.GetCellContent(data_item) as TextBlock).Text;
-                drp_supplier.Text = supp_item;
-            }
-        }
-
-        private void btn_delete_item_Click(object sender, RoutedEventArgs e)
+        private void btn_dlt_intblitem_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -379,57 +450,79 @@ namespace belajarCRUDWPF
                 tbl_item.ItemsSource = connection.Items.ToList();
                 drp_supplier.ItemsSource = connection.Suppliers.ToList();
             }
-            
         }
-
-        private void txt_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void srcbx_item_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
         }
-
-        private void txt_id_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void btn_src_item_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void txt_name_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
-        private void txt_address_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-        }
-
-        private void btn_clear_supp_Click(object sender, RoutedEventArgs e)
-        {
-            txt_id.Text = string.Empty;
-            txt_name.Text = string.Empty;
-            txt_address.Text = string.Empty;
-            txt_email.Text = string.Empty;
-            cb_role.Text = string.Empty;
-        }
-
-        private void btn_clear_item_Click(object sender, RoutedEventArgs e)
-        {
-            txt_id_item.Text = "";
-            txt_name_item.Text = "";
-            txt_price_item.Text = "";
-            txt_stock_item.Text = "";
-            drp_supplier.Text = string.Empty;
-        }
-
-        private void cb_role_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cb_role.Text == "" )
+            List<Item> rdatas = new List<Item>();
+            int parseValue;
+            if (srcbx_item.Text == "")
             {
-                cb_role.ItemsSource = connection.Roles.ToList();
+                tbl_item.ItemsSource = connection.Items.ToList();
             }
             else
             {
-                cb_roles = Convert.ToInt32(cb_role.SelectedValue.ToString());
+                foreach (Item tdah in connection.Items.ToList())
+                {
+                    if (tdah.Name.ToLower().Contains(srcbx_item.Text.ToLower()))
+                    {
+                        rdatas.Add(tdah);
+                    }
+                    else if (int.TryParse(srcbx_item.Text, out parseValue))
+                    {
+                        if (tdah.Id.Equals(Convert.ToInt32(srcbx_item.Text.ToLower())))
+                        {
+                            rdatas.Add(tdah);
+                        }else if (tdah.Price.Equals(Convert.ToInt32(srcbx_item.Text.ToLower())))
+                        {
+                            rdatas.Add(tdah);
+                        }else if (tdah.Stock.Equals(Convert.ToInt32(srcbx_item.Text.ToLower())))
+                        {
+                            rdatas.Add(tdah);
+                        }
+
+                    }else if (tdah.Supplier.Name.ToLower().Contains(srcbx_item.Text.ToLower()))
+                    {
+                        rdatas.Add(tdah);
+                    }
+                    //else if (int.TryParse(srcbx_item.Text, out parseValue))
+                    //{
+                    //    if (tdah.Price.Equals(Convert.ToInt32(srcbx_item.Text.ToLower())))
+                    //    {
+                    //        rdatas.Add(tdah);
+                    //    }
+                    //}
+                    //else if (int.TryParse(srcbx_item.Text, out parseValue))
+                    //{
+                    //    if (tdah.Stock.Equals(Convert.ToInt32(srcbx_item.Text.ToLower())))
+                    //    {
+                    //        rdatas.Add(tdah);
+                    //    }
+                    //}
+                    //else if (tdah.Password.ToLower().Contains(srcbx.Text.ToLower()))
+                    //{
+                    //    rdatas.Add(tdah);
+                    //}
+                }
+                tbl_item.ItemsSource = rdatas.ToList();
             }
+        }
+
+        private void Lout2_Click(object sender, RoutedEventArgs e)
+        {
+            loginregis loginpanel = new loginregis();
+            loginpanel.Show();
+            this.Close();
+        }
+
+        private void Lout1_Click(object sender, RoutedEventArgs e)
+        {
+            loginregis loginpanel = new loginregis();
+            loginpanel.Show();
+            this.Close();
         }
     }
 }
